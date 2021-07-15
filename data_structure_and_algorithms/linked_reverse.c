@@ -7,14 +7,17 @@ typedef struct Node {
 } Node;
 
 Node* create(int);
-Node* reverse(Node*);
+Node* reverseLoop(Node*);
 void print(Node*);
+Node* reverseRecursion(Node*, Node*);
 
 int main(int argc, char const *argv[])
 {
 	Node* first = create(0);
 	print(first);
-	first = reverse(first);
+	first = reverseLoop(first);
+	print(first);
+	first = reverseRecursion(first, first->next);
 	print(first);
 
 	return 0;
@@ -29,7 +32,7 @@ Node* create(int value) {
 	return node;
 }
 
-Node* reverse(Node* node) {
+Node* reverseLoop(Node* node) {
 	if (node == NULL)
 		return node;
 	
@@ -46,10 +49,18 @@ Node* reverse(Node* node) {
 	return pre;
 }
 
-Node* reverse(Node* node) {
+Node* reverseRecursion(Node* node, Node* next) {
+	Node* result = node;
 	if (node == NULL)
 		return node;
-
+	if (next != NULL) {
+		Node* nn = next->next;
+		next->next = node;
+		result = reverseRecursion(next, nn);
+	}
+	if (next != NULL && node->next == next && next->next == node)
+		node->next = NULL;
+	return result;
 }
 
 void print(Node* node) {
