@@ -12,6 +12,7 @@ list_pnt create(int);
 int insert(list_pnt, int, int);
 void print_list(list_pnt);
 int delete(list_pnt, int, int*);
+int locate_element(list_pnt, int);
 
 int main(int argc, char const *argv[])
 {
@@ -22,8 +23,8 @@ int main(int argc, char const *argv[])
 		insert(pnt, i, i);
 
 	insert(pnt, 5, 11);
-
 	print_list(pnt);
+	printf("locate:%d, index:%d\n", 11, locate_element(pnt, 11));
 
 	int del = -1;
 	delete(pnt, 5, &del);
@@ -63,6 +64,16 @@ int delete(list_pnt pnt, int index, int *element) {
 		pnt->pn[i] = pnt->pn[i + 1];
 	pnt->len--;
 	return 1;
+}
+
+int locate_element(list_pnt pnt, int element) {
+	if (pnt == NULL)
+		return -1;
+	int i;
+	for (i = 0; i < pnt->len; i++)
+		if (pnt->pn[i] == element)
+			return i;
+	return -1;
 }
 
 void print_list(list_pnt pnt) {
