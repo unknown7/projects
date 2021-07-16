@@ -65,7 +65,7 @@ Node* reverseRecursion(Node* node, Node* next) {
 
 void print(Node* node) {
 	while (node != NULL) {
-		printf("%d ", node->value);
+		printf(node->next != NULL ? "%d " : "%d", node->value);
 		node = node->next;
 	}
 	printf("\n");
