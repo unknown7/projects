@@ -9,6 +9,7 @@ typedef struct seq_list {
 } *list;
 
 list create(int);
+list init();
 int insert(list, int, int);
 void print_list(list);
 int delete(list, int, int*);
@@ -19,7 +20,7 @@ int locate_element(list, int);
 // 	int init_size = 10;
 // 	list pnt = create(init_size);
 // 	int i;
-// 	for (i = 0; i < init_size; i++)
+// 	for (i = 1; i <= init_size; i++)
 // 		insert(pnt, i, i);
 
 // 	insert(pnt, 5, 11);
@@ -44,11 +45,20 @@ list create(int n) {
 	return pnt;
 }
 
+list init() {
+	list pnt = create(10);
+	int i, j;
+	for (i = 1; i <= 10; i++)
+		insert(pnt, i, i);
+	print_list(pnt);
+	return pnt;
+}
+
 int insert(list pnt, int index, int element) {
-	if (index < 0 || index > SIZE)
+	if (index < 1 || index > SIZE)
 		return 0;
 	int i;
-	for (i = pnt->len; i > index; i--)
+	for (i = pnt->len + 1; i > index; i--)
 		pnt->pn[i] = pnt->pn[i - 1];
 	pnt->pn[i] = element;
 	pnt->len++;
@@ -56,11 +66,11 @@ int insert(list pnt, int index, int element) {
 }
 
 int delete(list pnt, int index, int *element) {
-	if (index < 0 || index >= pnt->len)
+	if (index < 1 || index > pnt->len)
 		return 0;
 	*element = pnt->pn[index];
 	int i;
-	for (i = index; i < pnt->len - 1; i++)
+	for (i = index; i < pnt->len; i++)
 		pnt->pn[i] = pnt->pn[i + 1];
 	pnt->len--;
 	return 1;
@@ -69,15 +79,15 @@ int delete(list pnt, int index, int *element) {
 int delete_min_displace_last(list pnt) {
 	if (pnt == NULL || pnt->len == 0)
 		return -1;
-	int i, min_index = 0, min = pnt->pn[0];
-	for (i = 0; i < pnt->len; i++)
+	int i, min_index = 1, min = pnt->pn[1];
+	for (i = 1; i <= pnt->len; i++)
 		if (pnt->pn[i] < min) {
 			min_index = i;
 			min = pnt->pn[i];
 		}
 
 	int result = pnt->pn[min_index];
-	pnt->pn[min_index] = pnt->pn[pnt->len - 1];
+	pnt->pn[min_index] = pnt->pn[pnt->len];
 	pnt->len--;
 	return result;
 }
@@ -86,7 +96,7 @@ int locate_element(list pnt, int element) {
 	if (pnt == NULL)
 		return -1;
 	int i;
-	for (i = 0; i < pnt->len; i++)
+	for (i = 1; i <= pnt->len; i++)
 		if (pnt->pn[i] == element)
 			return i;
 	return -1;
@@ -94,8 +104,8 @@ int locate_element(list pnt, int element) {
 
 void print_list(list pnt) {
 	int i;
-	for (i = 0; i < pnt->len; i++)
-		printf(i + 1 < pnt->len ? "%d " : "%d", pnt->pn[i]);
+	for (i = 1; i <= pnt->len; i++)
+		printf(i < pnt->len ? "%d " : "%d", pnt->pn[i]);
 	printf("\n");
 }
 
