@@ -6,45 +6,45 @@
 typedef struct seq_list {
 	int* pn;
 	int len;
-} *list_pnt;
+} *list;
 
-list_pnt create(int);
-int insert(list_pnt, int, int);
-void print_list(list_pnt);
-int delete(list_pnt, int, int*);
-int locate_element(list_pnt, int);
+list create(int);
+int insert(list, int, int);
+void print_list(list);
+int delete(list, int, int*);
+int locate_element(list, int);
 
-int main(int argc, char const *argv[])
-{
-	int init_size = 10;
-	list_pnt pnt = create(init_size);
-	int i;
-	for (i = 0; i < init_size; i++)
-		insert(pnt, i, i);
+// int main(int argc, char const *argv[])
+// {
+// 	int init_size = 10;
+// 	list pnt = create(init_size);
+// 	int i;
+// 	for (i = 0; i < init_size; i++)
+// 		insert(pnt, i, i);
 
-	insert(pnt, 5, 11);
-	print_list(pnt);
-	printf("locate:%d, index:%d\n", 11, locate_element(pnt, 11));
+// 	insert(pnt, 5, 11);
+// 	print_list(pnt);
+// 	printf("locate:%d, index:%d\n", 11, locate_element(pnt, 11));
 
-	int del = -1;
-	delete(pnt, 5, &del);
-	printf("delete:%d\n", del);
+// 	int del = -1;
+// 	delete(pnt, 5, &del);
+// 	printf("delete:%d\n", del);
 
-	print_list(pnt);
+// 	print_list(pnt);
 
-	return 0;
-}
+// 	return 0;
+// }
 
-list_pnt create(int n) {
+list create(int n) {
 	if (n > SIZE)
 		return NULL;
-	list_pnt pnt = (list_pnt) malloc(sizeof(struct seq_list));
+	list pnt = (list) malloc(sizeof(struct seq_list));
 	pnt->pn = (int*) malloc(sizeof(int)*n);
 	pnt->len = 0;
 	return pnt;
 }
 
-int insert(list_pnt pnt, int index, int element) {
+int insert(list pnt, int index, int element) {
 	if (index < 0 || index > SIZE)
 		return 0;
 	int i;
@@ -55,7 +55,7 @@ int insert(list_pnt pnt, int index, int element) {
 	return 1;
 }
 
-int delete(list_pnt pnt, int index, int *element) {
+int delete(list pnt, int index, int *element) {
 	if (index < 0 || index >= pnt->len)
 		return 0;
 	*element = pnt->pn[index];
@@ -66,7 +66,23 @@ int delete(list_pnt pnt, int index, int *element) {
 	return 1;
 }
 
-int locate_element(list_pnt pnt, int element) {
+int delete_min_displace_last(list pnt) {
+	if (pnt == NULL || pnt->len == 0)
+		return -1;
+	int i, min_index = 0, min = pnt->pn[0];
+	for (i = 0; i < pnt->len; i++)
+		if (pnt->pn[i] < min) {
+			min_index = i;
+			min = pnt->pn[i];
+		}
+
+	int result = pnt->pn[min_index];
+	pnt->pn[min_index] = pnt->pn[pnt->len - 1];
+	pnt->len--;
+	return result;
+}
+
+int locate_element(list pnt, int element) {
 	if (pnt == NULL)
 		return -1;
 	int i;
@@ -76,7 +92,7 @@ int locate_element(list_pnt pnt, int element) {
 	return -1;
 }
 
-void print_list(list_pnt pnt) {
+void print_list(list pnt) {
 	int i;
 	for (i = 0; i < pnt->len; i++)
 		printf(i + 1 < pnt->len ? "%d " : "%d", pnt->pn[i]);
