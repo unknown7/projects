@@ -10,17 +10,12 @@ int main(int argc, char const *argv[])
 
 	sort(list);
 
-	int i = 1, j = list->len;
+	int i, k;
+	for (i = 1, k = 1; i <= list->len; i++)
+		if (list->pn[i] < s || list->pn[i] > t)
+			list->pn[k++] = list->pn[i];
 
-	while (list->pn[i] < s)
-		i++;
-	while (list->pn[j] > t)
-		j--;
-
-	while (j < list->len)
-		list->pn[i++] = list->pn[++j];
-
-	list->len -= j - i + 1;
+	list->len = k - 1;
 
 	print_list(list);
 
