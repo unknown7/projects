@@ -55,7 +55,6 @@ list init() {
 	int i, j;
 	for (i = 1; i <= 10; i++)
 		insert(pnt, i, i);
-	print_list(pnt);
 	return pnt;
 }
 
