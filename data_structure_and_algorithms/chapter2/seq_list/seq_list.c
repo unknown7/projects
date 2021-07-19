@@ -14,6 +14,9 @@ int insert(list, int, int);
 void print_list(list);
 int delete(list, int, int*);
 int locate_element(list, int);
+void sort(list);
+void q_sort(int*, int, int);
+void swap(int*, int*);
 
 // int main(int argc, char const *argv[])
 // {
@@ -28,9 +31,11 @@ int locate_element(list, int);
 // 	printf("locate:%d, index:%d\n", 11, locate_element(pnt, 11));
 
 // 	int del = -1;
-// 	delete(pnt, 5, &del);
+// 	delete(pnt, 2, &del);
 // 	printf("delete:%d\n", del);
+// 	print_list(pnt);
 
+// 	sort(pnt);
 // 	print_list(pnt);
 
 // 	return 0;
@@ -108,6 +113,61 @@ void print_list(list pnt) {
 		printf(i < pnt->len ? "%d " : "%d", pnt->pn[i]);
 	printf("\n");
 }
+
+void sort(list pnt) {
+	q_sort(pnt->pn, 1, pnt->len);
+}
+
+void q_sort(int* arr, int begin, int end) {
+	if (begin >= end)
+		return;
+
+	int i = begin, j = end;
+	int v = arr[i];
+
+	while (i != j) {
+
+		while (i < j && arr[j] >= v)
+			j--;
+
+		while (i < j && arr[i] <= v)
+			i++;
+
+		if (i < j)
+			swap(&arr[i], &arr[j]);
+	}
+
+	if (begin < j)
+		swap(&arr[begin], &arr[j]);
+
+	q_sort(arr, begin, j - 1);
+	q_sort(arr, j + 1, end);
+}
+
+void swap(int* a, int* b) {
+	*a ^= *b;
+	*b ^= *a;
+	*a ^= *b;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
