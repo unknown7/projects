@@ -9,7 +9,7 @@ typedef struct seq_list {
 } *list;
 
 list create(int);
-list init();
+list init(int, int);
 int insert(list, int, int);
 void print_list(list);
 int delete(list, int, int*);
@@ -50,11 +50,11 @@ list create(int n) {
 	return pnt;
 }
 
-list init() {
-	list pnt = create(10);
+list init(int len, int gap) {
+	list pnt = create(len);
 	int i, j;
-	for (i = 1; i <= 10; i++)
-		insert(pnt, i, i);
+	for (i = 1; i <= len; i++)
+		insert(pnt, i, i * gap);
 	return pnt;
 }
 

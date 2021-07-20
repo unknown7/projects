@@ -3,31 +3,36 @@
 
 int main(int argc, char const *argv[])
 {
-	list list = init();
+	int init_len, boundary, gap = 1;
+	printf("init_len:");
+	scanf("%d", &init_len);
+	printf("boundary_index:");
+	scanf("%d", &boundary);
+	list list = init(init_len, gap);
 	print_list(list);
 
-	int a, b, c, boundary;
+	int left, right, offset;
 
-	boundary = 6;
-	a = 1, b = list->len - boundary + 1, c = boundary + 1;
+	offset = list->len - boundary;
+	left = 1, right = boundary + 1;
 
-	printf("boundary=%d,a=%d,b=%d,c=%d", boundary, a, b ,c);
+	printf("boundary=%d,left=%d,offset=%d,right=%d", boundary, left, offset, right);
 	printf("\n");
 
 	int round = 1;
-	while (c <= list->len) {
-		int at = list->pn[a];
-		int bt = list->pn[b];
-		int ct = list->pn[c];
-
-		list->pn[a] = ct;
-		list->pn[b] = at;
-		list->pn[c] = bt;
-
-		a++;
-		b++;
-		c++;
-
+	int* arr = list->pn;
+	while (right <= list->len) {
+		int o;
+		int n = arr[right];
+		int k = left;
+		while (k <= right) {
+			o = arr[k];
+			arr[k] = n;
+			n = o;
+			k += offset;
+		}
+		left++;
+		right++;
 		printf("round「%d」:", round++);
 		print_list(list);
 	}
