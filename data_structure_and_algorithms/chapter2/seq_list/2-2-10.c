@@ -26,6 +26,7 @@ int main(int argc, char const *argv[])
 
 	offset = steps, left = 1, right = len - offset + 1;
 	point = right;
+	int pp = point;
 	max_times = times = 0;
 	int round = 1;
 	while (right <= len) {
@@ -39,17 +40,18 @@ int main(int argc, char const *argv[])
 			k += offset;
 			times++;
 		}
-		
+
 		if (times >= max_times) {
 			max_times = times;
 			arr[right] = n;
 		} else {
 			int cursor = right;
-			while (cursor > point) {
+			while (cursor > pp) {
 				arr[cursor] = arr[cursor - 1];
 				cursor--;
 			}
 			arr[cursor] = n;
+			pp++;
 		}
 
 		left++;
