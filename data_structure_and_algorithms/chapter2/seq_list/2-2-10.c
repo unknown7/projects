@@ -7,11 +7,11 @@ int main(int argc, char const *argv[])
 {
 
 	int init_length, gaps, steps;
-	printf("init length:");
+	printf("length of initialization:");
 	scanf("%d", &init_length);
 	printf("gaps:");
 	scanf("%d", &gaps);
-	printf("steps of moving right:");
+	printf("steps to moving right:");
 	scanf("%d", &steps);
 
 	list list = init(init_length, gaps);
@@ -19,39 +19,38 @@ int main(int argc, char const *argv[])
 	steps %= list->len;
 
 	int left, right, offset;
-	int o, n, k, i;
-	int point, times, max_times;
+	int old, new, k;
+	int boundary, times, max_times, adjustment;
 	int len = list->len;
 	int* arr = list->pn;
 
 	offset = steps, left = 1, right = len - offset + 1;
-	point = right;
-	int pp = point;
+	adjustment = boundary = right;
 	max_times = times = 0;
 	int round = 1;
 	while (right <= len) {
-		n = arr[right];
+		new = arr[right];
 		k = left;
 		times = 0;
-		while (k < point) {
-			o = arr[k];
-			arr[k] = n;
-			n = o;
+		while (k < boundary) {
+			old = arr[k];
+			arr[k] = new;
+			new = old;
 			k += offset;
 			times++;
 		}
 
 		if (times >= max_times) {
 			max_times = times;
-			arr[right] = n;
+			arr[right] = new;
 		} else {
 			int cursor = right;
-			while (cursor > pp) {
+			while (cursor > adjustment) {
 				arr[cursor] = arr[cursor - 1];
 				cursor--;
 			}
-			arr[cursor] = n;
-			pp++;
+			arr[cursor] = new;
+			adjustment++;
 		}
 
 		left++;
