@@ -55,8 +55,8 @@ int main(int argc, char const *argv[])
 
 		left++;
 		right++;
-		printf("round「%d」:", round++);
-		print_list(list);
+		// printf("round「%d」:", round++);
+		// print_list(list);
 	}
 
 	print_list(list);
