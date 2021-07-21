@@ -10,6 +10,9 @@ Linked_List init(void);
 void head_insert(Linked_List);
 void tail_insert(Linked_List);
 Linked_List locate_index(Linked_List, int);
+Linked_List locate_element(Linked_List, int);
+void insert(Linked_List, int, int);
+Linked_List delete(Linked_List, int);
 void print_list(Linked_List);
 
 Linked_List init() {
@@ -64,6 +67,37 @@ Linked_List locate_index(Linked_List head, int index) {
 	return node;
 }
 
+Linked_List locate_element(Linked_List head, int element) {
+	Linked_List node = head;
+	while (node != NULL) {
+		if (node->data == element)
+			break;
+		node = node->next;
+	}
+	return node;
+}
+
+void insert(Linked_List head, int index, int data) {
+	Linked_List prev = locate_index(head, index - 1);
+	if (prev != NULL) {
+		Linked_List node = (Linked_List) malloc(sizeof(struct Node));
+		node->data = data;
+		node->next = prev->next;
+		prev->next = node;
+	}
+}
+
+Linked_List delete(Linked_List head, int index) {
+	Linked_List node = NULL;
+	Linked_List prev = locate_index(head, index - 1);
+	if (prev != NULL) {
+		node = prev->next;
+		prev->next = node->next;
+		free(node);
+	}
+	return node;
+}
+
 void print_list(Linked_List head) {
 	Linked_List node = head;
 	while (node != NULL) {
@@ -81,11 +115,28 @@ int main() {
 	tail_insert(list);
 	print_list(list);
 
-	int locate_index;
-	printf("locate:");
-	scanf("%d", &locate_index);
-	Linked_List node = locate_index(list, locate_index);
-	printf("locate index:%d=%d\n", locate_index, node->data);
+	int index, element, insert_data_index, insert_data, delete_index;
+	printf("locate index:");
+	scanf("%d", &index);
+	Linked_List node = locate_index(list, index);
+	printf("locate index:%d=%d\n", index, node->data);
+	printf("locate element:");
+	scanf("%d", &element);
+	node = locate_element(list, element);
+	printf("locate element:%d=%d\n", element, node == NULL ? -999999 : node->data);
+	printf("insert data index:");
+	scanf("%d", &insert_data_index);
+	printf("insert data:");
+	scanf("%d", &insert_data);
+	insert(list, insert_data_index, insert_data);
+
+	print_list(list);
+
+	printf("delete index:");
+	scanf("%d", &delete_index);
+	delete(list, delete_index);
+	print_list(list);
+
 	return 0;
 }
 
