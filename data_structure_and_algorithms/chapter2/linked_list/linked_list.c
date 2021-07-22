@@ -11,8 +11,10 @@ void head_insert(Linked_List);
 void tail_insert(Linked_List);
 Linked_List locate_index(Linked_List, int);
 Linked_List locate_element(Linked_List, int);
-void insert(Linked_List, int, int);
-Linked_List delete(Linked_List, int);
+void insert_index(Linked_List, int, int);
+Linked_List insert_before(Linked_List, Linked_List, int);
+Linked_List remove_index(Linked_List, int);
+void remove_node(Linked_List, Linked_List);
 void print_list(Linked_List);
 
 Linked_List init() {
@@ -56,11 +58,11 @@ void tail_insert(Linked_List head) {
 }
 
 Linked_List locate_index(Linked_List head, int index) {
-	if (head == NULL || index < 1 || index > head->data)
+	if (head == NULL || index < 0 || index > head->data)
 		return NULL;
 
-	Linked_List node = head->next;
-	int i = 1;
+	Linked_List node = head;
+	int i = 0;
 	while (i++ < index)
 		node = node->next;
 
@@ -77,7 +79,7 @@ Linked_List locate_element(Linked_List head, int element) {
 	return node;
 }
 
-void insert(Linked_List head, int index, int data) {
+void insert_index(Linked_List head, int index, int data) {
 	Linked_List prev = locate_index(head, index - 1);
 	if (prev != NULL) {
 		Linked_List node = (Linked_List) malloc(sizeof(struct Node));
@@ -87,15 +89,56 @@ void insert(Linked_List head, int index, int data) {
 	}
 }
 
-Linked_List delete(Linked_List head, int index) {
+Linked_List insert_before(Linked_List head, Linked_List element, int data) {
+	Linked_List node = NULL, prev = head;
+	// 1、traditional
+	// while (prev != NULL && prev->next != element)
+	// 	prev = prev->next;
+	// if (prev != NULL) {
+	// 	node = (Linked_List) malloc(sizeof(struct Node));
+	// 	node->data = data;
+	// 	node->next = element;
+	// 	prev->next = node;
+	// }
+	// return node;
+	// 2、exchange
+	node = (Linked_List) malloc(sizeof(struct Node));
+	node->data = data;
+	node->next = element->next;
+	element->next = node;
+	int temp = element->data;
+	element->data = node->data;
+	node->data = temp;
+	return node;
+}
+
+Linked_List remove_index(Linked_List head, int index) {
 	Linked_List node = NULL;
 	Linked_List prev = locate_index(head, index - 1);
 	if (prev != NULL) {
 		node = prev->next;
 		prev->next = node->next;
+		head->data--;
 		free(node);
 	}
 	return node;
+}
+
+void remove_node(Linked_List head, Linked_List node) {
+	// 1、tradational
+	Linked_List n = head;
+	while (n != NULL && n->next != node)
+		n = n->next;
+	if (n != NULL) {
+		n->next = node->next;
+		head->data--;
+		free(node);
+	}
+	// 2、exchange
+	// Linked_List next = node->next;
+	// node->data = next->data;
+	// node->next = next->next;
+	// free(next);
 }
 
 void print_list(Linked_List head) {
@@ -128,13 +171,22 @@ int main() {
 	scanf("%d", &insert_data_index);
 	printf("insert data:");
 	scanf("%d", &insert_data);
-	insert(list, insert_data_index, insert_data);
+	insert_index(list, insert_data_index, insert_data);
 
 	print_list(list);
 
 	printf("delete index:");
 	scanf("%d", &delete_index);
-	delete(list, delete_index);
+	remove_index(list, delete_index);
+	print_list(list);
+
+	printf("locate index:");
+	scanf("%d", &index);
+	node = locate_index(list, index);
+	insert_before(list, node, 98);
+	printf("%d\n", node->data);
+	print_list(list);
+	remove_node(list, node);
 	print_list(list);
 
 	return 0;
