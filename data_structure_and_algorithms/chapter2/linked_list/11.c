@@ -31,6 +31,7 @@ void insert(Node head, ElemType data) {
 	head->next = node;
 }
 
+// segregate 
 void separate(Node head, Node a, Node b) {
 	if (head == NULL)
 		return;
@@ -75,7 +76,7 @@ int main() {
 	b = (Node) malloc(sizeof(struct Node));
 
 	separate(head, a, b);
-	
+
 	print(a);
 	print(b);
 
